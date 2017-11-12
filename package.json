@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/rchaser53/vue-datatable2-playground#readme",
   "dependencies": {
+    "express": "^4.16.2",
+    "node-fetch": "^1.7.3",
     "typescript": "^2.6.1",
     "vue": "^2.5.3",
     "vuetable-2": "^1.7.0",
