@@ -35,26 +35,30 @@ impl Service for HelloWorld {
 }
 
 fn main() {
-    // let mut core = Core::new().unwrap();
-    // let client = Client::new(&core.handle());
+    let mut core = Core::new().unwrap();
+    let client = Client::new(&core.handle());
 
-    // let uri = "https://api.github.com/repos/rchaser53/vue-datatable2-playground/commits".parse().unwrap();
+    // let uri = "https://api.github.com/repos/rchaser53/vue-datatable2-playground/commits"
+    let uri = "http://httpbin.org/ip"
+                    .parse().unwrap();
 
-    // let res = client.get(uri)
-    //             .map(|res| {
+    let work = client.get(uri)
+                .map(|res| {
                 // println!("{}", res);
-                // println!("Response: {}", res.status());
-                // println!(11);
+                println!("Response: {:?}", res.status());
+                println!(11);
+            });
+
+    core.run(work).unwrap();
+
+    // let addr = "127.0.0.1:3000".parse().unwrap();
+    // let server = Http::new().bind(&addr, || Ok(HelloWorld)).unwrap();
+    // server.run().unwrap();
+}
+
 
                 // Response::new()
                     // .with_header(ContentLength(PHRASE.len() as u64))
                     // .with_body(PHRASE)
                     // .with_header(ContentLength(res.body().len() as u64))
                     // .with_body(res.body());
-            // });
-
-
-    let addr = "127.0.0.1:3000".parse().unwrap();
-    let server = Http::new().bind(&addr, || Ok(HelloWorld)).unwrap();
-    server.run().unwrap();
-}
