@@ -16,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/rchaser53/vue-datatable2-playground/issues"
   },
-  "homepage": "https://github.com/rchaser53/vue-datatable2-playground#readme"
+  "homepage": "https://github.com/rchaser53/vue-datatable2-playground#readme",
+  "dependencies": {
+    "typescript": "^2.6.1",
+    "vue": "^2.5.3",
+    "vuetable-2": "^1.7.0",
+    "webpack": "^3.8.1"
+  }
 }
