@@ -1,0 +1,9 @@
+[package]
+authors = ["rchaser53 <tayoshizawa29@gmail.com>"]
+name = "api-server"
+version = "0.1.0"
+
+[dependencies]
+futures = "0.1.17"
+hyper = "0.11.6"
+tokio-core = "0.1.10"
