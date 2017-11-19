@@ -3,12 +3,14 @@ extern crate hyper;
 extern crate hyper_tls;
 extern crate futures;
 extern crate tokio_core;
+extern crate serde_json;
 
 use std::io::{self, Write};
 use futures::future::{Future};
 use futures::stream::{Stream};
 use hyper::{Client, Method};
 use tokio_core::reactor::Core;
+use serde_json::{Value};
 
 use hyper::header::{Headers, UserAgent, ContentLength};
 use hyper::server::{Http, Request, Response, Service};
@@ -46,15 +48,19 @@ fn main() {
     let mut req = Request::new(Method::Get, "https://api.github.com/repos/rchaser53/vue-table-playground/commits".parse().unwrap());
     req.headers_mut().set(UserAgent::new("todo"));
 
-
     let client = Client::configure()
         .connector(HttpsConnector::new(4, &handle).unwrap())
         .build(&handle);
 
-    let work = client.request(req);
+    let work = client.request(req)
+                    .and_then(|res| {
+                        res.body().concat2().and_then(move |body| {
+                            let v: Value = serde_json::from_slice(&body).unwrap();
+                            println!("{:?}", v);
+                            Ok(v)
+                        })
+                    });
     let res = core.run(work).unwrap();
-    println!("{:?}", res.status());
-
     // let addr = "127.0.0.1:3000".parse().unwrap();
     // let server = Http::new().bind(&addr, || Ok(HelloWorld)).unwrap();
     // server.run().unwrap();
