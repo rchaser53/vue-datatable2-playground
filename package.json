@@ -18,9 +18,7 @@
   },
   "homepage": "https://github.com/rchaser53/vue-datatable2-playground#readme",
   "dependencies": {
-    "element-pagination": "^1.1.0",
-    "element-table": "^1.0.0",
-    "element-theme-chalk": "^2.0.5",
+    "casual": "^1.5.17",
     "express": "^4.16.2",
     "node-fetch": "^1.7.3",
     "typescript": "^2.6.1",
