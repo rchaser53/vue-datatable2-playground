@@ -6,7 +6,7 @@ const server = require('http').createServer(app)
 
 app.get('*', async (req, res) => {
   try {
-    const pre = await fetch('https://api.github.com/repos/rchaser53/vue-datatable2-playground/commits')
+    const pre = await fetch('https://api.github.com/repos/rchaser53/vue-table-playground/commits')
     const ret = await pre.json()
     res.send(JSON.stringify(ret))
   }

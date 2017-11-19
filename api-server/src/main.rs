@@ -1,3 +1,4 @@
+#[macro_use]
 extern crate hyper;
 extern crate hyper_tls;
 extern crate futures;
@@ -6,13 +7,12 @@ extern crate tokio_core;
 use std::io::{self, Write};
 use futures::future::{Future};
 use futures::stream::{Stream};
-use hyper::Client;
+use hyper::{Client, Method};
 use tokio_core::reactor::Core;
 
-use hyper::header::ContentLength;
+use hyper::header::{Headers, UserAgent, ContentLength};
 use hyper::server::{Http, Request, Response, Service};
 use hyper_tls::HttpsConnector;
-
 
 const PHRASE: &'static str = "Hello, World!";
 
@@ -38,22 +38,30 @@ impl Service for HelloWorld {
 fn main() {
     let mut core = Core::new().unwrap();
     let handle = core.handle();
+
+    header! { ( Authorization, "Authorization" ) => [String] }
+    // let auth_header = format!("token {}", token);
+    // req.headers_mut().set(Authorization(auth_header));
+
+    let mut req = Request::new(Method::Get, "https://api.github.com/repos/rchaser53/vue-table-playground/commits".parse().unwrap());
+    req.headers_mut().set(UserAgent::new("todo"));
+
+
     let client = Client::configure()
         .connector(HttpsConnector::new(4, &handle).unwrap())
         .build(&handle);
 
-    let uri = "https://api.github.com/repos/rchaser53/vue-datatable2-playground/commits"
-                    .parse().unwrap();
-    let work = client.get(uri);
-
+    let work = client.request(req);
     let res = core.run(work).unwrap();
-    println!("{:?}", res.status().is_success());
+    println!("{:?}", res.status());
 
     // let addr = "127.0.0.1:3000".parse().unwrap();
     // let server = Http::new().bind(&addr, || Ok(HelloWorld)).unwrap();
     // server.run().unwrap();
 }
 
+// header! { ( Authorization, "Authorization" ) => [String] }
+// let auth_header = format!("token {}", token);
 
                 // res.body().for_each(|chunk| {
                 //     io::stdout()
