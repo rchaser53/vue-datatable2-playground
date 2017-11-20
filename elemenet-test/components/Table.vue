@@ -1,12 +1,10 @@
 <template>
-  <div class="VueToNuxtLogo">
-    <el-table :data="tableData" :default-sort="{prop: 'email', order: 'descending'}" style="width: 100%">
-      <el-table-column class-name="filter-column" prop="email" label="email" sortable>
-      </el-table-column>
-      <el-table-column prop="firstname" label="First Name">
-      </el-table-column>
-      <el-table-column prop="lastname" label="Last Name" >
-      </el-table-column>
+  <div>
+    <el-pagination layout="prev, pager, next" @current-change="changePage" :page-size="pageSize" :total="dataLength" />
+    <el-table :data="filteredData" :default-sort="{prop: 'email', order: 'descending'}" style="width: 100%">
+      <el-table-column class-name="filter-column" prop="email" label="email" sortable />
+      <el-table-column prop="firstname" label="First Name" sortable />
+      <el-table-column prop="lastname" label="Last Name" sortable />
     </el-table>
   </div>
 </template>
@@ -14,10 +12,12 @@
 <script>
   import Vue from 'vue'
   import { ElTable, ElTableColumn } from 'element-table'
+  import ElPagination from 'element-pagination'
   import 'element-theme-chalk/lib/table.css'
+  import 'element-theme-chalk/lib/pagination.css'
 
   export default {
-    mounted: function () {
+    mounted () {
       fetch('http://localhost:3100/tabledata', {
         mode: 'cors'
       }).then((ret) => ret.json())
@@ -28,14 +28,32 @@
           console.error(err)
         })
     },
-    data: function () {
+    data () {
       return {
-        tableData: []
+        tableData: [],
+        currentPage: 1
       }
     },
     components: {
+      'el-pagination': ElPagination,
       'el-table': ElTable,
       'el-table-column': ElTableColumn
+    },
+    methods: {
+      changePage (value) {
+        Vue.set(this, 'currentPage', value)
+      }
+    },
+    computed: {
+      dataLength () {
+        return this.tableData.length
+      },
+      filteredData () {
+        return this.tableData.slice((this.currentPage - 1) * this.pageSize, this.currentPage * this.pageSize)
+      },
+      pageSize () {
+        return 20
+      }
     }
   }
 </script>
