@@ -1,7 +1,8 @@
 <template>
   <div>
     <el-pagination layout="prev, pager, next" @current-change="changePage" :page-size="pageSize" :total="dataLength" />
-    <el-table :data="filteredData" :default-sort="{prop: 'email', order: 'descending'}" style="width: 100%">
+    <el-table :empty-text="'empty'" :data="filteredData" :default-sort="{prop: 'email', order: 'descending'}" style="width: 100%">
+      <!-- <div slot="empty">whatever wanna render for empty data</div> -->
       <el-table-column type="index" sortable />
       <el-table-column class-name="filter-column" prop="email" label="email" sortable />
       <el-table-column prop="firstname" label="First Name" sortable />
