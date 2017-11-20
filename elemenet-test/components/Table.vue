@@ -1,5 +1,6 @@
 <template>
   <div>
+    <input @change="changeFilterValue" />
     <el-pagination layout="prev, pager, next" @current-change="changePage" :page-size="pageSize" :total="dataLength" />
     <el-table :empty-text="'empty'" :data="filteredData" :default-sort="{prop: 'email', order: 'descending'}" style="width: 100%">
       <!-- <div slot="empty">whatever wanna render for empty data</div> -->
@@ -37,7 +38,8 @@
     data () {
       return {
         tableData: [],
-        currentPage: 1
+        currentPage: 1,
+        filterValue: '',
       }
     },
     components: {
@@ -48,6 +50,9 @@
     methods: {
       changePage (value) {
         Vue.set(this, 'currentPage', value)
+      },
+      changeFilterValue (event) {
+        Vue.set(this, 'filterValue', event.target.value)
       }
     },
     computed: {
@@ -55,7 +60,14 @@
         return this.tableData.length
       },
       filteredData () {
-        return this.tableData.slice((this.currentPage - 1) * this.pageSize, this.currentPage * this.pageSize)
+        const filteredData = this.filterValue !== ''
+          ? this.tableData.filter((record) => {
+            return Object.values(record).some((recordValue) => {
+              return recordValue.includes(this.filterValue)
+            })
+          })
+          : this.tableData
+        return filteredData.slice((this.currentPage - 1) * this.pageSize, this.currentPage * this.pageSize)
       },
       pageSize () {
         return 20
