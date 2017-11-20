@@ -2,6 +2,7 @@
   <div>
     <el-pagination layout="prev, pager, next" @current-change="changePage" :page-size="pageSize" :total="dataLength" />
     <el-table :data="filteredData" :default-sort="{prop: 'email', order: 'descending'}" style="width: 100%">
+      <el-table-column type="index" sortable />
       <el-table-column class-name="filter-column" prop="email" label="email" sortable />
       <el-table-column prop="firstname" label="First Name" sortable />
       <el-table-column prop="lastname" label="Last Name" sortable />
@@ -11,10 +12,14 @@
 
 <script>
   import Vue from 'vue'
-  import { ElTable, ElTableColumn } from 'element-table'
-  import ElPagination from 'element-pagination'
+  import {
+    Table as ElTable,
+    TableColumn as ElTableColumn,
+    Pagination as ElPagination
+  } from 'element-ui'
   import 'element-theme-chalk/lib/table.css'
   import 'element-theme-chalk/lib/pagination.css'
+  import 'element-theme-chalk/lib/icon.css'
 
   export default {
     mounted () {
